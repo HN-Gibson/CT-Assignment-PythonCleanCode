@@ -9,21 +9,22 @@
 # Clear definitions of classes such as `WeatherDataFetcher`, `DataParser`, and `UserInterface`, each handling specific parts of the application.
 
 class DataFetcher:
-    def __init__(self):
+    def __init__(self,city):
+        self.city=city
         self.data = {
             "New York": {"temperature": 70, "condition": "Sunny", "humidity": 50, "city": "New York"},
             "London": {"temperature": 60, "condition": "Cloudy", "humidity": 65, "city": "London"},
             "Tokyo": {"temperature": 75, "condition": "Rainy", "humidity": 70, "city": "Tokyo"}
         }
         
-    def fetch_weather_data(self,city):
+    def fetch_weather_data(self):
         # Simulated function to fetch weather data for a given city
-        print(f"Fetching weather data for {city}...")
-        return self.data.get(city, {})
+        print(f"Fetching weather data for {self.city}...")
+        return self.data.get(self.city, {})
 
 class DataParser:
-    def __init__(self):
-        pass
+    def __init__(self,city):
+        self.city=city
 
     def parse_weather_data(self,data):
         # Function to parse weather data
@@ -35,37 +36,35 @@ class DataParser:
         humidity = data["humidity"]
         return f"Weather in {city}: {temperature} degrees, {condition}, Humidity: {humidity}%"
 
-    def get_detailed_forecast(self,city):
-        self.city=city
-        self.data=data
+    def get_detailed_forecast(self):
         # Function to provide a detailed weather forecast for a city
-        data = DataFetcher.fetch_weather_data(self.city)
-        return DataParser.parse_weather_data(self.data)
+        data = DataFetcher(self.city).fetch_weather_data()
+        return self.parse_weather_data(data)
 
-    def display_weather(self,city):
-        self.city=city
-        self.data=data
+    def display_weather(self):
         # Function to display the basic weather forecast for a city
-        data = DataFetcher.fetch_weather_data(self.city)
+        data = DataFetcher(self.city).fetch_weather_data()
         if not data:
             print(f"Weather data not available for {self.city}")
         else:
-            weather_report = DataParser.parse_weather_data(self.data)
-            print(weather_report)
+            weather_report = self.parse_weather_data(data)
+            return weather_report
 
 class UserInterface:
     def __init__(self):
         pass
-    def main():
+    def main(self):
         while True:
             city = input("Enter the city to get the weather forecast or 'exit' to quit: ")
             if city.lower() == 'exit':
                 break
             detailed = input(f"Do you want a detailed forecast for {city}? (yes/no): ").lower()
             if detailed == 'yes':
-                forecast = DataParser.get_detailed_forecast(city)
+                forecast = DataParser(city).get_detailed_forecast()
             else:
-                forecast = DataParser.display_weather(city)
+                forecast = DataParser(city).display_weather()
             print(forecast)
 
-UserInterface.main()
+
+app=UserInterface()
+app.main()
