@@ -54,6 +54,8 @@ class DataParser:
             print(weather_report)
 
 class UserInterface:
+    def __init__(self):
+        pass
     def main():
         while True:
             city = input("Enter the city to get the weather forecast or 'exit' to quit: ")
